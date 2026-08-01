@@ -289,6 +289,37 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
+    .principle-list li + li { margin-top: 0.5rem; }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.75rem;
+    }
+    .tool-card {
+      display: block;
+      padding: 0.75rem 1rem;
+      background: var(--wash);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--ink);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .tool-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-sm);
+    }
+    .tool-card strong {
+      display: block;
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", "Liberation Mono", monospace;
+      font-size: 1rem;
+      color: var(--brand);
+      margin-bottom: 0.15rem;
+    }
+    .tool-card span {
+      font-size: 0.8rem;
+      color: var(--muted);
     }
 
     footer {
@@ -428,6 +459,79 @@
 
   <section>
     <div class="container">
+      <div class="section-label">Open Source</div>
+      <h2>Published CLI Tools</h2>
+      <p class="intro-text" style="margin-bottom: 1.5rem;">
+        Every tool ships with --help, --version, tests, and a README. Zero external
+        dependencies. Install any of them with pip:
+      </p>
+      <div class="tool-grid">
+        <a href="https://github.com/jrbobbyhansen-pixel/toc" class="tool-card" target="_blank">
+          <strong>toc</strong>
+          <span>Markdown TOC generator</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/qr" class="tool-card" target="_blank">
+          <strong>qr</strong>
+          <span>QR code generator</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/cheat" class="tool-card" target="_blank">
+          <strong>cheat</strong>
+          <span>Personal cheatsheet manager</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/size" class="tool-card" target="_blank">
+          <strong>size</strong>
+          <span>Directory size analyzer</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/envlock" class="tool-card" target="_blank">
+          <strong>envlock</strong>
+          <span>Lock .env files with checksum</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/hash" class="tool-card" target="_blank">
+          <strong>hash</strong>
+          <span>File hashing (md5, sha256, blake2b)</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/todo" class="tool-card" target="_blank">
+          <strong>todo</strong>
+          <span>Command-line todo list</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/json" class="tool-card" target="_blank">
+          <strong>json</strong>
+          <span>JSON validator and formatter</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/port" class="tool-card" target="_blank">
+          <strong>port</strong>
+          <span>Local port manager</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/cert" class="tool-card" target="_blank">
+          <strong>cert</strong>
+          <span>SSL cert expiry checker</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/dup" class="tool-card" target="_blank">
+          <strong>dup</strong>
+          <span>Duplicate file finder</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/rename" class="tool-card" target="_blank">
+          <strong>rename</strong>
+          <span>Bulk file renamer</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/backup" class="tool-card" target="_blank">
+          <strong>backup</strong>
+          <span>Incremental file backup</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/env" class="tool-card" target="_blank">
+          <strong>env</strong>
+          <span>Environment variable manager</span>
+        </a>
+        <a href="https://github.com/jrbobbyhansen-pixel/url" class="tool-card" target="_blank">
+          <strong>url</strong>
+          <span>URL validator and parser</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
       <div class="section-label">Follow Along</div>
       <h2>Watch the Build</h2>
       <div class="intro-text">
@@ -436,9 +540,9 @@
           Every tool, every post, every decision — visible as it happens.
         </p>
         <p>
-          The source code for each tool is published on GitHub under the Manta organization.
-          Paid tools are distributed through standard channels; free tools are available
-          immediately to anyone.
+          The source code for each tool is published on GitHub. Paid tools are
+          distributed through standard channels; free tools are available immediately
+          to anyone.
         </p>
       </div>
       <a href="index.html" class="back-link">Back to Portfolio</a>
