@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manta Tools Demo — Hill Country Ventures</title>
+  <meta name="description" content="Try Manta CLI tools live in your browser. Interactive terminal demo for toc, qr, cheat, size, envlock, hash, todo, json, port, cert, dup, rename, backup, env, url.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --brand: #1d3a5f;
+      --brand-light: #2a4f7a;
+      --accent: #b0872f;
+      --accent-light: #d4a843;
+      --ink: #3a3f47;
+      --ink-strong: #1a1e24;
+      --muted: #7b828d;
+      --line: #e2e6ec;
+      --line-soft: #eef1f4;
+      --wash: #f6f8fa;
+      --paper: #ffffff;
+      --font-display: Georgia, "Bitstream Charter", Charter, "Liberation Serif", "Times New Roman", serif;
+      --font-body: "Avenir Next", "Helvetica Neue", "Segoe UI", "Liberation Sans", "DejaVu Sans", Arial, sans-serif;
+      --max-width: 960px;
+      --radius: 10px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.65;
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .serif { font-family: var(--font-display); }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--brand);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-weight: 700;
+      color: var(--brand);
+      margin: 0 0 1.2rem;
+      padding-bottom: 0.7rem;
+      position: relative;
+    }
+
+    h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 2.8rem;
+      height: 2.5px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    p  { margin: 0 0 0.75rem; }
+    a  { color: var(--brand); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--accent); }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .masthead {
+      background: var(--brand);
+      color: #ffffff;
+      padding: 1.2rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .masthead .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wordmark {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+    }
+
+    .wordmark span { color: var(--accent); }
+
+    .masthead nav {
+      display: flex;
+      gap: 1.8rem;
+      align-items: center;
+    }
+
+    .masthead nav a {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .masthead nav a:hover { color: #ffffff; }
+    .masthead nav a.active { color: #ffffff; }
+
+    .hero {
+      padding: 4rem 0 2.5rem;
+      background: linear-gradient(135deg, var(--wash) 0%, #eef2f7 100%);
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -30%;
+      right: -5%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(176,135,47,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-kicker {
+      font-size: 0.75rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .hero h1 { max-width: 36rem; }
+
+    .hero-sub {
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      color: var(--ink);
+      max-width: 36rem;
+      line-height: 1.6;
+      margin-top: 0.5rem;
+    }
+
+    section { padding: 3rem 0; }
+
+    .intro-text {
+      max-width: 40rem;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .terminal-wrapper {
+      background: #0d1b2a;
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      margin: 1.5rem 0;
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      background: #0f1f30;
+      border-bottom: 1px solid rgba(176,135,47,0.2);
+    }
+
+    .terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .terminal-dot.red { background: #ff5f56; }
+    .terminal-dot.yellow { background: #ffbd2e; }
+    .terminal-dot.green { background: #27c93f; }
+
+    .terminal-title {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      margin-left: 0.5rem;
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", "Liberation Mono", monospace;
+    }
+
+    #terminal-container {
+      padding: 0.5rem;
+      height: 420px;
+    }
+
+    .command-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .cmd-chip {
+      display: inline-block;
+      padding: 0.35rem 0.7rem;
+      background: var(--wash);
+      border: 1px solid var(--line-soft);
+      border-radius: 6px;
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", "Liberation Mono", monospace;
+      font-size: 0.8rem;
+      color: var(--brand);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      text-align: center;
+    }
+
+    .cmd-chip:hover {
+      border-color: var(--accent);
+      background: #fef7e0;
+    }
+
+    .cmd-chip .desc {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+      font-weight: 400;
+    }
+
+    .help-box {
+      background: var(--wash);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .help-box h3 {
+      font-size: 0.9rem;
+      color: var(--brand);
+      margin-bottom: 0.5rem;
+    }
+
+    .help-box code {
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", "Liberation Mono", monospace;
+      font-size: 0.8rem;
+      background: var(--line);
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+    }
+
+    .help-box p {
+      font-size: 0.85rem;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    footer {
+      background: var(--brand);
+      color: rgba(255,255,255,0.65);
+      padding: 2.5rem 0;
+      font-size: 0.82rem;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer .wordmark { font-size: 1rem; }
+    footer a { color: rgba(255,255,255,0.75); }
+    footer a:hover { color: #ffffff; }
+
+    footer .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .masthead .container { flex-direction: column; gap: 0.5rem; }
+      .masthead nav { gap: 1.2rem; }
+      .hero { padding: 3rem 0 2rem; }
+      .command-grid { grid-template-columns: repeat(2, 1fr); }
+      footer .container { flex-direction: column; text-align: center; }
+      footer .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="container">
+      <a href="index.html" class="wordmark">Hill Country <span>Ventures</span></a>
+      <nav>
+        <a href="index.html">Portfolio</a>
+        <a href="manta.html">Manta</a>
+        <a href="manta-demo.html" class="active">Live Demo</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-kicker">Interactive Terminal</div>
+      <h1>Try Manta Tools Live</h1>
+      <p class="hero-sub">
+        A simulated terminal running all 15 Manta CLI tools. Type any command below
+        or click a tool name to see it in action. Each tool responds with realistic
+        output — no installation required.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+
+      <div class="section-label">Available Commands</div>
+      <h2>Tools</h2>
+
+      <div class="command-grid" id="command-grid">
+        <span class="cmd-chip" data-cmd="toc">toc <span class="desc">Markdown TOC generator</span></span>
+        <span class="cmd-chip" data-cmd="qr">qr <span class="desc">QR code generator</span></span>
+        <span class="cmd-chip" data-cmd="cheat">cheat <span class="desc">Personal cheatsheet manager</span></span>
+        <span class="cmd-chip" data-cmd="size">size <span class="desc">Directory size analyzer</span></span>
+        <span class="cmd-chip" data-cmd="envlock">envlock <span class="desc">Lock .env files with checksum</span></span>
+        <span class="cmd-chip" data-cmd="hash">hash <span class="desc">File hashing (md5, sha256, blake2b)</span></span>
+        <span class="cmd-chip" data-cmd="todo">todo <span class="desc">Command-line todo list</span></span>
+        <span class="cmd-chip" data-cmd="json">json <span class="desc">JSON validator and formatter</span></span>
+        <span class="cmd-chip" data-cmd="port">port <span class="desc">Local port manager</span></span>
+        <span class="cmd-chip" data-cmd="cert">cert <span class="desc">SSL cert expiry checker</span></span>
+        <span class="cmd-chip" data-cmd="dup">dup <span class="desc">Duplicate file finder</span></span>
+        <span class="cmd-chip" data-cmd="rename">rename <span class="desc">Bulk file renamer</span></span>
+        <span class="cmd-chip" data-cmd="backup">backup <span class="desc">Incremental file backup</span></span>
+        <span class="cmd-chip" data-cmd="env">env <span class="desc">Environment variable manager</span></span>
+        <span class="cmd-chip" data-cmd="url">url <span class="desc">URL validator and parser</span></span>
+      </div>
+
+      <div class="help-box">
+        <h3>How to use</h3>
+        <p>
+          Type a command in the terminal below and press Enter. Try <code>toc --help</code>
+          for any tool, or click a tool name above to auto-type a demo command.
+          Type <code>help</code> to list all tools, or <code>clear</code> to reset.
+        </p>
+      </div>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+          <span class="terminal-title">manta-demo ~ $</span>
+        </div>
+        <div id="terminal-container"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label">Next Steps</div>
+      <h2>Install Locally</h2>
+      <div class="intro-text">
+        <p>
+          All Manta tools are open source on GitHub. Install any of them with pip:
+        </p>
+        <p style="font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Liberation Mono', monospace; font-size: 0.85rem; background: var(--wash); padding: 0.8rem 1rem; border-radius: 6px; border: 1px solid var(--line-soft);">
+          pip install manta-tools
+        </p>
+        <p>
+          Or clone individual repos from <a href="https://github.com/jrbobbyhansen-pixel" target="_blank">github.com/jrbobbyhansen-pixel</a>.
+        </p>
+      </div>
+      <a href="manta.html" class="back-link">Back to Manta</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <a href="index.html" class="wordmark">Hill Country <span>Ventures</span></a>
+      <div class="footer-links">
+        <a href="index.html">Portfolio</a>
+        <a href="manta.html">Manta</a>
+        <a href="manta-demo.html">Live Demo</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div>2026 Hill Country Ventures LLC</div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+  <script>
+    (function() {
+      var term = new Terminal({
+        cursorBlink: true,
+        cursorStyle: 'block',
+        fontSize: 14,
+        fontFamily: '"SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", "Liberation Mono", monospace',
+        lineHeight: 1.4,
+        theme: {
+          background: '#0d1b2a',
+          foreground: '#d4d4d4',
+          cursor: '#b0872f',
+          cursorAccent: '#0d1b2a',
+          selectionBackground: 'rgba(176,135,47,0.3)',
+          black: '#1a1a2e',
+          red: '#e06c75',
+          green: '#98c379',
+          yellow: '#d4a843',
+          blue: '#61afef',
+          magenta: '#c678dd',
+          cyan: '#56b6c2',
+          white: '#d4d4d4',
+          brightBlack: '#5c6370',
+          brightRed: '#e06c75',
+          brightGreen: '#98c379',
+          brightYellow: '#d4a843',
+          brightBlue: '#61afef',
+          brightMagenta: '#c678dd',
+          brightCyan: '#56b6c2',
+          brightWhite: '#ffffff'
+        }
+      });
+
+      var container = document.getElementById('terminal-container');
+      term.open(container);
+
+      var prompt = '$ ';
+      var inputBuffer = '';
+      var cursorPos = 0;
+      var history = [];
+      var historyIdx = -1;
+      var locked = false;
+
+      function writePrompt() {
+        term.write('\r\n\x1b[38;2;176;135;47m' + prompt + '\x1b[0m');
+      }
+
+      function writeln(text) {
+        term.writeln(text);
+      }
+
+      function write(text) {
+        term.write(text);
+      }
+
+      function simulateOutput(lines) {
+        locked = true;
+        var i = 0;
+        function next() {
+          if (i < lines.length) {
+            term.writeln(lines[i]);
+            i++;
+            setTimeout(next, 40 + Math.random() * 60);
+          } else {
+            writePrompt();
+            locked = false;
+          }
+        }
+        next();
+      }
+
+      function handleCommand(cmd) {
+        var trimmed = cmd.trim();
+        if (!trimmed) {
+          writePrompt();
+          return;
+        }
+
+        if (trimmed === 'clear') {
+          term.clear();
+          writePrompt();
+          return;
+        }
+
+        if (trimmed === 'help') {
+          var tools = [
+            'toc      Markdown TOC generator',
+            'qr       QR code generator',
+            'cheat    Personal cheatsheet manager',
+            'size     Directory size analyzer',
+            'envlock  Lock .env files with checksum',
+            'hash     File hashing (md5, sha256, blake2b)',
+            'todo     Command-line todo list',
+            'json     JSON validator and formatter',
+            'port     Local port manager',
+            'cert     SSL cert expiry checker',
+            'dup      Duplicate file finder',
+            'rename   Bulk file renamer',
+            'backup   Incremental file backup',
+            'env      Environment variable manager',
+            'url      URL validator and parser'
+          ];
+          var lines = [
+            '\x1b[38;2;176;135;47mManta CLI Tools\x1b[0m',
+            '\x1b[38;2;176;135;47m' + Array(40).join('\u2500') + '\x1b[0m',
+            'Usage: <tool> [--help] [args]',
+            ''
+          ];
+          tools.forEach(function(t) { lines.push('  ' + t); });
+          lines.push('');
+          lines.push('Built-in commands: help, clear');
+          simulateOutput(lines);
+          return;
+        }
+
+        var parts = trimmed.split(/\s+/);
+        var tool = parts[0];
+        var args = parts.slice(1).join(' ');
+
+        var responses = {
+          'toc': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47mtoc\x1b[0m - Markdown Table of Contents Generator',
+                '',
+                'Usage: toc [--help] [--max-depth N] [--no-print] <file.md>',
+                '',
+                'Options:',
+                '  --help         Show this help message',
+                '  --max-depth N  Maximum heading depth (default: 6)',
+                '  --no-print     Write TOC inline instead of printing',
+                '',
+                'Example:',
+                '  $ toc README.md',
+                '  $ toc --max-depth 3 docs/guide.md',
+                '',
+                'Exit codes: 0 = success, 1 = file not found, 2 = no headings'
+              ];
+            }
+            if (a === 'README.md') {
+              return [
+                'Table of Contents for README.md',
+                '',
+                '  - [Introduction](#introduction)',
+                '  - [Installation](#installation)',
+                '    - [Prerequisites](#prerequisites)',
+                '    - [Quick Start](#quick-start)',
+                '  - [Usage](#usage)',
+                '    - [Basic Commands](#basic-commands)',
+                '    - [Advanced Options](#advanced-options)',
+                '  - [Configuration](#configuration)',
+                '  - [Contributing](#contributing)',
+                '  - [License](#license)',
+                '',
+                'Generated 12 entries. Max depth: 6.'
+              ];
+            }
+            return [
+              '\x1b[38;2;229;192;123mtoc: ' + a + ': file not found\x1b[0m',
+              'Try: toc README.md'
+            ];
+          },
+
+          'qr': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47mqr\x1b[0m - QR Code Generator',
+                '',
+                'Usage: qr [--help] [--output FILE] [--size N] <text>',
+                '',
+                'Options:',
+                '  --help        Show this help message',
+                '  --output FILE Save QR code to PNG file',
+                '  --size N      Module size in pixels (default: 10)',
+                '',
+                'Example:',
+                '  $ qr "https://example.com"',
+                '  $ qr --output qr.png "Hello World"'
+              ];
+            }
+            var text = a.replace(/^--output\s+\S+\s*/, '').replace(/^--size\s+\S+\s*/, '');
+            if (!text) text = a;
+            return [
+              'QR Code for: ' + text,
+              '',
+              '\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588',
+              '\u2588\u2588  \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  \u2588\u2588',
+              '\u2588\u2588  \u2588\u2588  \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  \u2588\u2588  \u2588\u2588',
+              '\u2588\u2588  \u2588\u2588  \u2588\u2588\u2588\u2588  \u2588\u2588\u2588\u2588\u2588\u2588  \u2588\u2588  \u2588\u2588',
+              '\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588',
+              '\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588',
+              '\u2588\u2588  \u2588\u2588  \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  \u2588\u2588  \u2588\u2588',
+              '\u2588\u2588  \u2588\u2588  \u2588\u2588\u2588\u2588  \u2588\u2588\u2588\u2588\u2588\u2588  \u2588\u2588  \u2588\u2588',
+              '\u2588\u2588  \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  \u2588\u2588',
+              '\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588',
+              '',
+              'Size: 21x21 modules. Saved to stdout.'
+            ];
+          },
+
+          'cheat': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47mcheat\x1b[0m - Personal Cheatsheet Manager',
+                '',
+                'Usage: cheat [--help] [--list] [--edit SHEET] <sheet>',
+                '',
+                'Options:',
+                '  --help       Show this help message',
+                '  --list       List all cheatsheets',
+                '  --edit SHEET Open sheet in editor',
+                '',
+                'Example:',
+                '  $ cheat git',
+                '  $ cheat --list',
+                '  $ cheat --edit docker'
+              ];
+            }
+            if (a === '--list') {
+              return [
+                'Available cheatsheets:',
+                '',
+                '  git      Git commands and workflows',
+                '  docker   Docker and docker-compose',
+                '  python   Python standard library snippets',
+                '  bash     Bash scripting patterns',
+                '  vim      Vim navigation and editing',
+                '  sql      SQL query patterns',
+                '',
+                '6 sheets. Use cheat <name> to view.'
+              ];
+            }
+            if (a === 'git') {
+              return [
+                'Git Cheatsheet',
+                '',
+                '  git status              Show working tree status',
+                '  git add -p              Stage changes interactively',
+                '  git commit -m "msg"     Commit with message',
+                '  git push origin main    Push to remote',
+                '  git pull --rebase       Pull and rebase',
+                '  git log --oneline       Compact commit log',
+                '  git diff                Show unstaged changes',
+                '  git branch -a           List all branches',
+                '  git checkout -b NAME    Create and switch branch',
+                '  git stash               Stash working changes',
+                '',
+                'Pro tip: git commit --amend to edit last commit message.'
+              ];
+            }
+            return [
+              '\x1b[38;2;229;192;123mcheat: no sheet named "' + a + '"\x1b[0m',
+              'Try: cheat --list'
+            ];
+          },
+
+          'size': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47msize\x1b[0m - Directory Size Analyzer',
+                '',
+                'Usage: size [--help] [--depth N] [--sort size|name] [--min SIZE] <path>',
+                '',
+                'Options:',
+                '  --help       Show this help message',
+                '  --depth N    Max directory depth (default: 2)',
+                '  --sort       Sort by size or name (default: size)',
+                '  --min SIZE   Minimum size to show (e.g. 1MB)',
+                '',
+                'Example:',
+                '  $ size .',
+                '  $ size --depth 3 --sort name /var/log'
+              ];
+            }
+            return [
+              'Directory: ' + (a || '.'),
+              '',
+              '  4.2 MB  ./src/',
+              '  1.8 MB  ./src/lib/',
+              '  1.2 MB  ./src/lib/core.py',
+              '  612 KB  ./src/lib/utils.py',
+              '  2.1 MB  ./tests/',
+              '  1.5 MB  ./tests/test_core.py',
+              '  340 KB  ./tests/fixtures/',
+              '  876 KB  ./docs/',
+              '  120 KB  ./README.md',
+              '   48 KB  ./setup.py',
+              '   12 KB  ./Makefile',
+              '',
+              'Total: 9.2 MB across 47 files and 12 directories'
+            ];
+          },
+
+          'envlock': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47menvlock\x1b[0m - Lock .env files with checksum',
+                '',
+                'Usage: envlock [--help] [--check] [--update] [--file FILE]',
+                '',
+                'Options:',
+                '  --help       Show this help message',
+                '  --check      Verify .env matches .env.lock',
+                '  --update     Update .env.lock checksum',
+                '  --file FILE  Target file (default: .env)',
+                '',
+                'Example:',
+                '  $ envlock --update',
+                '  $ envlock --check'
+              ];
+            }
+            if (a === '--check') {
+              return [
+                'Checking .env against .env.lock...',
+                '',
+                '  .env:        sha256: a1b2c3d4e5f6... (12 variables)',
+                '  .env.lock:   sha256: a1b2c3d4e5f6...',
+                '',
+                '\x1b[38;2;152;195;121mOK - checksums match\x1b[0m'
+              ];
+            }
+            if (a === '--update') {
+              return [
+                'Updating .env.lock...',
+                '',
+                '  .env: 12 variables, 1.2 KB',
+                '  Lock: sha256: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4',
+                '',
+                '\x1b[38;2;152;195;121m.env.lock updated\x1b[0m'
+              ];
+            }
+            return [
+              '\x1b[38;2;176;135;47menvlock\x1b[0m - Lock .env files with checksum',
+              '',
+              'Usage: envlock [--help] [--check] [--update] [--file FILE]'
+            ];
+          },
+
+          'hash': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47mhash\x1b[0m - File Hashing Utility',
+                '',
+                'Usage: hash [--help] [--algo md5|sha256|blake2b] <file>',
+                '',
+                'Options:',
+                '  --help       Show this help message',
+                '  --algo ALGO  Hash algorithm (default: sha256)',
+                '',
+                'Example:',
+                '  $ hash file.txt',
+                '  $ hash --algo md5 file.txt',
+                '  $ hash --algo blake2b file.txt'
+              ];
+            }
+            var algo = 'sha256';
+            var file = a;
+            if (a && a.indexOf('--algo') === 0) {
+              var parts2 = a.split(/\s+/);
+              algo = parts2[1] || 'sha256';
+              file = parts2.slice(2).join(' ') || 'file.txt';
+            }
+            var hashes = {
+              'md5': 'd41d8cd98f00b204e9800998ecf8427e',
+              'sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+              'blake2b': '786a02f742015903c6c6cb8f2c8b8c5c6c8b8c5c6c8b8c5c6c8b8c5c6c8b8c5c'
+            };
+            return [
+              'File: ' + file,
+              'Algorithm: ' + algo,
+              '',
+              algo + ': ' + (hashes[algo] || 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6'),
+              '',
+              'File size: 1.2 KB',
+              'Elapsed: 0.003s'
+            ];
+          },
+
+          'todo': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47mtodo\x1b[0m - Command-line Todo List',
+                '',
+                'Usage: todo [--help] [--list] [--add TASK] [--done N] [--rm N]',
+                '',
+                'Options:',
+                '  --help     Show this help message',
+                '  --list     List all tasks',
+                '  --add TASK Add a new task',
+                '  --done N   Mark task N as done',
+                '  --rm N     Remove task N',
+                '',
+                'Example:',
+                '  $ todo --add "Write documentation"',
+                '  $ todo --list',
+                '  $ todo --done 1'
+              ];
+            }
+            if (a === '--list') {
+              return [
+                'Todo List (3 items)',
+                '',
+                '  \x1b[38;2;152;195;121m[1]\x1b[0m  Write documentation for toc tool',
+                '  \x1b[38;2;152;195;121m[2]\x1b[0m  Add tests for qr generator',
+                '  \x1b[38;2;229;192;123m[3]\x1b[0m  Publish v0.2.0 to PyPI',
+                '',
+                '2 done, 1 pending'
+              ];
+            }
+            if (a && a.indexOf('--add') === 0) {
+              var task = a.slice(5).trim();
+              return [
+                '\x1b[38;2;152;195;121mAdded:\x1b[0m ' + task,
+                'Todo list now has 4 items.'
+              ];
+            }
+            if (a && a.indexOf('--done') === 0) {
+              return [
+                '\x1b[38;2;152;195;121mMarked task ' + a.slice(6).trim() + ' as done.\x1b[0m'
+              ];
+            }
+            return [
+              '\x1b[38;2;176;135;47mtodo\x1b[0m - Command-line Todo List',
+              '',
+              'Usage: todo [--help] [--list] [--add TASK] [--done N] [--rm N]'
+            ];
+          },
+
+          'json': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47mjson\x1b[0m - JSON Validator and Formatter',
+                '',
+                'Usage: json [--help] [--minify] [--validate] [--pretty] [--query KEY]',
+                '',
+                'Options:',
+                '  --help       Show this help message',
+                '  --minify     Minify JSON output',
+                '  --validate   Validate JSON only (no output)',
+                '  --pretty     Pretty-print JSON (default)',
+                '  --query KEY  Extract a key value',
+                '',
+                'Example:',
+                '  $ echo \'{"name":"test"}\' | json --pretty',
+                '  $ json --validate data.json'
+              ];
+            }
+            if (a === '--validate') {
+              return [
+                'Reading from stdin...',
+                '',
+                '\x1b[38;2;152;195;121mValid JSON\x1b[0m',
+                'Size: 1.2 KB, Depth: 4, Keys: 12'
+              ];
+            }
+            if (a === '--pretty') {
+              return [
+                '{',
+                '  "name": "manta-tools",',
+                '  "version": "0.2.0",',
+                '  "description": "Collection of CLI utilities",',
+                '  "tools": [',
+                '    "toc",',
+                '    "qr",',
+                '    "cheat",',
+                '    "size"',
+                '  ],',
+                '  "license": "MIT"',
+                '}'
+              ];
+            }
+            return [
+              '{',
+              '  "name": "manta-tools",',
+              '  "version": "0.2.0",',
+              '  "status": "active"',
+              '}'
+            ];
+          },
+
+          'port': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47mport\x1b[0m - Local Port Manager',
+                '',
+                'Usage: port [--help] [--list] [--check PORT] [--kill PORT]',
+                '',
+                'Options:',
+                '  --help      Show this help message',
+                '  --list      List all listening ports',
+                '  --check PORT Check if port is in use',
+                '  --kill PORT Kill process on port',
+                '',
+                'Example:',
+                '  $ port --list',
+                '  $ port --check 8080',
+                '  $ port --kill 3000'
+              ];
+            }
+            if (a === '--list') {
+              return [
+                'Active Ports',
+                '',
+                '  PORT   PID    PROCESS',
+                '  3000   12345  node /app/server.js',
+                '  5432   23456  postgres -D /var/lib/pgsql',
+                '  8080   34567  python -m http.server',
+                '  22     1      sshd',
+                '',
+                '4 ports in use'
+              ];
+            }
+            if (a && a.indexOf('--check') === 0) {
+              var p = a.slice(8).trim();
+              if (p === '8080') {
+                return [
+                  'Port ' + p + ': \x1b[38;2;229;192;123mIN USE\x1b[0m',
+                  'PID: 34567, Process: python -m http.server'
+                ];
+              }
+              return [
+                'Port ' + p + ': \x1b[38;2;152;195;121mAVAILABLE\x1b[0m'
+              ];
+            }
+            return [
+              '\x1b[38;2;176;135;47mport\x1b[0m - Local Port Manager',
+              '',
+              'Usage: port [--help] [--list] [--check PORT] [--kill PORT]'
+            ];
+          },
+
+          'cert': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47mcert\x1b[0m - SSL Certificate Expiry Checker',
+                '',
+                'Usage: cert [--help] [--days N] <domain>',
+                '',
+                'Options:',
+                '  --help     Show this help message',
+                '  --days N   Warn if expiring within N days (default: 30)',
+                '',
+                'Example:',
+                '  $ cert example.com',
+                '  $ cert --days 14 example.com'
+              ];
+            }
+            var domain = a.replace(/^--days\s+\d+\s*/, '');
+            if (!domain) domain = a;
+            return [
+              'SSL Certificate for: ' + domain,
+              '',
+              '  Subject:     CN=' + domain,
+              '  Issuer:      Let\'s Encrypt Authority X3',
+              '  Valid From:  2026-01-15',
+              '  Valid Until: 2026-04-15',
+              '  Days Left:   78',
+              '  Algorithm:   SHA-256 with RSA Encryption',
+              '  Key Size:    2048 bits',
+              '',
+              '\x1b[38;2;152;195;121mOK - ' + domain + ' certificate is valid (78 days remaining)\x1b[0m'
+            ];
+          },
+
+          'dup': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47mdup\x1b[0m - Duplicate File Finder',
+                '',
+                'Usage: dup [--help] [--hash md5|sha256] [--min SIZE] [--delete] <path>',
+                '',
+                'Options:',
+                '  --help      Show this help message',
+                '  --hash      Hash algorithm (default: sha256)',
+                '  --min SIZE  Minimum file size (default: 1KB)',
+                '  --delete    Remove duplicate files',
+                '',
+                'Example:',
+                '  $ dup .',
+                '  $ dup --delete ./downloads'
+              ];
+            }
+            return [
+              'Scanning for duplicates in: ' + (a || '.'),
+              '',
+              'Duplicate Groups Found: 3',
+              '',
+              'Group 1 (2 files, 1.2 MB each):',
+              '  ./backup/config.yaml',
+              '  ./config.yaml',
+              '',
+              'Group 2 (3 files, 340 KB each):',
+              '  ./photos/DSC_001.jpg',
+              '  ./photos/DSC_001_copy.jpg',
+              '  ./photos/backup/DSC_001.jpg',
+              '',
+              'Group 3 (2 files, 88 KB each):',
+              '  ./docs/README.md',
+              '  ./README_copy.md',
+              '',
+              'Total duplicates: 7 files, 3.2 MB wasted space'
+            ];
+          },
+
+          'rename': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47mrename\x1b[0m - Bulk File Renamer',
+                '',
+                'Usage: rename [--help] [--dry-run] [--pattern OLD] --replace NEW <files>',
+                '',
+                'Options:',
+                '  --help       Show this help message',
+                '  --dry-run    Show what would change without renaming',
+                '  --pattern    Pattern to find',
+                '  --replace    Replacement text',
+                '',
+                'Example:',
+                '  $ rename --pattern " " --replace "-" *.txt',
+                '  $ rename --dry-run --pattern "DSC" --replace "photo" *.jpg'
+              ];
+            }
+            if (a && a.indexOf('--dry-run') >= 0) {
+              return [
+                'Dry run - no files changed',
+                '',
+                '  report_2025.txt -> report-2025.txt',
+                '  report_2026.txt -> report-2026.txt',
+                '  my file.txt     -> my-file.txt',
+                '',
+                'Would rename 3 files'
+              ];
+            }
+            return [
+              'Renamed 3 files:',
+              '',
+              '  report_2025.txt -> report-2025.txt',
+              '  report_2026.txt -> report-2026.txt',
+              '  my file.txt     -> my-file.txt',
+              '',
+              '\x1b[38;2;152;195;121mDone\x1b[0m'
+            ];
+          },
+
+          'backup': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47mbackup\x1b[0m - Incremental File Backup',
+                '',
+                'Usage: backup [--help] [--init] [--run] [--list] [--restore N] <target>',
+                '',
+                'Options:',
+                '  --help      Show this help message',
+                '  --init      Initialize backup repository',
+                '  --run       Run incremental backup',
+                '  --list      List backup snapshots',
+                '  --restore N Restore snapshot N',
+                '',
+                'Example:',
+                '  $ backup --init ./my-backups',
+                '  $ backup --run ./project',
+                '  $ backup --list'
+              ];
+            }
+            if (a === '--init') {
+              return [
+                'Initializing backup repository...',
+                '',
+                '  Repository: ./manta-backups/',
+                '  Created:    2026-08-01 14:30:00 UTC',
+                '  Version:    1',
+                '',
+                '\x1b[38;2;152;195;121mBackup repository initialized\x1b[0m'
+              ];
+            }
+            if (a === '--run') {
+              return [
+                'Running incremental backup...',
+                '',
+                '  Files scanned:    47',
+                '  Files changed:    3',
+                '  Files new:        1',
+                '  Files deleted:    0',
+                '  Data transferred: 1.2 MB',
+                '  Snapshot:         #4 (2026-08-01 14:30:05 UTC)',
+                '',
+                '\x1b[38;2;152;195;121mBackup complete\x1b[0m'
+              ];
+            }
+            if (a === '--list') {
+              return [
+                'Backup Snapshots',
+                '',
+                '  #1  2026-07-25  12.4 MB  Initial backup',
+                '  #2  2026-07-28  1.1 MB   Incremental',
+                '  #3  2026-07-30  890 KB   Incremental',
+                '  #4  2026-08-01  1.2 MB   Incremental',
+                '',
+                'Total: 15.6 MB across 4 snapshots'
+              ];
+            }
+            return [
+              '\x1b[38;2;176;135;47mbackup\x1b[0m - Incremental File Backup',
+              '',
+              'Usage: backup [--help] [--init] [--run] [--list] [--restore N] <target>'
+            ];
+          },
+
+          'env': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47menv\x1b[0m - Environment Variable Manager',
+                '',
+                'Usage: env [--help] [--list] [--get KEY] [--set KEY=VALUE] [--unset KEY] [--file FILE]',
+                '',
+                'Options:',
+                '  --help       Show this help message',
+                '  --list       List all environment variables',
+                '  --get KEY    Get value for KEY',
+                '  --set K=V    Set KEY to VALUE',
+                '  --unset KEY  Remove KEY',
+                '  --file FILE  Use custom .env file',
+                '',
+                'Example:',
+                '  $ env --list',
+                '  $ env --get DATABASE_URL',
+                '  $ env --set DEBUG=true'
+              ];
+            }
+            if (a === '--list') {
+              return [
+                'Environment Variables (from .env)',
+                '',
+                '  DATABASE_URL  postgresql://localhost:5432/manta',
+                '  API_KEY       sk-********************',
+                '  DEBUG         true',
+                '  LOG_LEVEL     info',
+                '  PORT          8080',
+                '',
+                '5 variables loaded from .env'
+              ];
+            }
+            if (a && a.indexOf('--get') === 0) {
+              var key = a.slice(5).trim();
+              var vals = { 'DATABASE_URL': 'postgresql://localhost:5432/manta', 'API_KEY': 'sk-********************', 'DEBUG': 'true', 'PORT': '8080' };
+              return [
+                key + '=' + (vals[key] || '(not set)')
+              ];
+            }
+            if (a && a.indexOf('--set') === 0) {
+              return [
+                '\x1b[38;2;152;195;121mSet:\x1b[0m ' + a.slice(5).trim()
+              ];
+            }
+            return [
+              '\x1b[38;2;176;135;47menv\x1b[0m - Environment Variable Manager',
+              '',
+              'Usage: env [--help] [--list] [--get KEY] [--set KEY=VALUE] [--unset KEY] [--file FILE]'
+            ];
+          },
+
+          'url': function(a) {
+            if (!a || a === '--help') {
+              return [
+                '\x1b[38;2;176;135;47murl\x1b[0m - URL Validator and Parser',
+                '',
+                'Usage: url [--help] [--encode] [--decode] <url>',
+                '',
+                'Options:',
+                '  --help     Show this help message',
+                '  --encode   URL-encode the input',
+                '  --decode   URL-decode the input',
+                '',
+                'Example:',
+                '  $ url https://example.com/path?q=hello',
+                '  $ url --encode "hello world"',
+                '  $ url --decode "hello%20world"'
+              ];
+            }
+            if (a && a.indexOf('--encode') === 0) {
+              var enc = a.slice(8).trim();
+              return [
+                'Input:  ' + enc,
+                'Output: ' + encodeURIComponent(enc)
+              ];
+            }
+            if (a && a.indexOf('--decode') === 0) {
+              return [
+                'Input:  ' + a.slice(8).trim(),
+                'Output: hello world'
+              ];
+            }
+            var u = a || 'https://example.com';
+            try {
+              var parsed = new URL(u);
+              return [
+                'URL: ' + u,
+                '',
+                '  Protocol:  ' + parsed.protocol,
+                '  Host:      ' + parsed.hostname,
+                '  Port:      ' + (parsed.port || '(default)'),
+                '  Path:      ' + (parsed.pathname || '/'),
+                '  Query:     ' + (parsed.search || '(none)'),
+                '  Fragment:  ' + (parsed.hash || '(none)'),
+                '',
+                '\x1b[38;2;152;195;121mValid URL\x1b[0m'
+              ];
+            } catch(e) {
+              return [
+                '\x1b[38;2;229;192;123murl: invalid URL: ' + u + '\x1b[0m',
+                'Expected format: https://example.com/path'
+              ];
+            }
+          }
+        };
+
+        var handler = responses[tool];
+        if (handler) {
+          var output = handler(args);
+          simulateOutput(output);
+        } else {
+          simulateOutput([
+            '\x1b[38;2;229;192;123m' + tool + ': command not found\x1b[0m',
+            'Type "help" for a list of available tools.'
+          ]);
+        }
+      }
+
+      // Handle input
+      term.onData(function(data) {
+        if (locked) return;
+
+        var code = data.charCodeAt(0);
+
+        // Enter
+        if (code === 13) {
+          var cmd = inputBuffer;
+          term.writeln('');
+          if (cmd.trim()) {
+            history.push(cmd.trim());
+            historyIdx = history.length;
+          }
+          handleCommand(cmd);
+          inputBuffer = '';
+          cursorPos = 0;
+          return;
+        }
+
+        // Backspace
+        if (code === 127) {
+          if (cursorPos > 0) {
+            inputBuffer = inputBuffer.slice(0, cursorPos - 1) + inputBuffer.slice(cursorPos);
+            cursorPos--;
+            term.write('\b \b');
+            // Rewrite rest
+            var rest = inputBuffer.slice(cursorPos);
+            if (rest) {
+              term.write(rest);
+              term.write('\x1b[' + rest.length + 'D');
+            }
+          }
+          return;
+        }
+
+        // Tab
+        if (code === 9) {
+          return;
+        }
+
+        // Up arrow
+        if (code === 27 && data.length >= 3) {
+          if (data[2] === 'A') {
+            if (historyIdx > 0) {
+              historyIdx--;
+              // Clear current line
+              while (cursorPos > 0) {
+                term.write('\b \b');
+                cursorPos--;
+              }
+              inputBuffer = history[historyIdx];
+              cursorPos = inputBuffer.length;
+              term.write(inputBuffer);
+            }
+            return;
+          }
+          // Down arrow
+          if (data[2] === 'B') {
+            if (historyIdx < history.length - 1) {
+              historyIdx++;
+              while (cursorPos > 0) {
+                term.write('\b \b');
+                cursorPos--;
+              }
+              inputBuffer = history[historyIdx];
+              cursorPos = inputBuffer.length;
+              term.write(inputBuffer);
+            } else if (historyIdx === history.length - 1) {
+              historyIdx = history.length;
+              while (cursorPos > 0) {
+                term.write('\b \b');
+                cursorPos--;
+              }
+              inputBuffer = '';
+              cursorPos = 0;
+            }
+            return;
+          }
+          // Left arrow
+          if (data[2] === 'D') {
+            if (cursorPos > 0) {
+              cursorPos--;
+              term.write('\x1b[D');
+            }
+            return;
+          }
+          // Right arrow
+          if (data[2] === 'C') {
+            if (cursorPos < inputBuffer.length) {
+              cursorPos++;
+              term.write('\x1b[C');
+            }
+            return;
+          }
+          return;
+        }
+
+        // Printable characters
+        if (code >= 32 && code <= 126) {
+          if (cursorPos === inputBuffer.length) {
+            inputBuffer += data;
+            cursorPos++;
+            term.write(data);
+          } else {
+            inputBuffer = inputBuffer.slice(0, cursorPos) + data + inputBuffer.slice(cursorPos);
+            var rest2 = inputBuffer.slice(cursorPos);
+            term.write(data + rest2);
+            term.write('\x1b[' + rest2.length + 'D');
+            cursorPos++;
+          }
+        }
+      });
+
+      // Welcome message
+      var welcome = [
+        '\x1b[38;2;176;135;47m' + Array(45).join('\u2500') + '\x1b[0m',
+        '\x1b[38;2;176;135;47m  Manta Tools Interactive Demo\x1b[0m',
+        '\x1b[38;2;176;135;47m' + Array(45).join('\u2500') + '\x1b[0m',
+        '',
+        'Type a command and press Enter. Try:',
+        '  \x1b[38;2;86;182;194mhelp\x1b[0m        - List all available tools',
+        '  \x1b[38;2;86;182;194mtoc --help\x1b[0m  - Show help for any tool',
+        '  \x1b[38;2;86;182;194mclear\x1b[0m      - Clear the terminal',
+        '',
+        'Or click a tool name above to auto-type a demo command.',
+        ''
+      ];
+      var idx = 0;
+      function printWelcome() {
+        if (idx < welcome.length) {
+          term.writeln(welcome[idx]);
+          idx++;
+          setTimeout(printWelcome, 30);
+        } else {
+          writePrompt();
+        }
+      }
+      printWelcome();
+
+      // Click-to-type for command chips
+      document.addEventListener('DOMContentLoaded', function() {
+        var chips = document.querySelectorAll('.cmd-chip');
+        chips.forEach(function(chip) {
+          chip.addEventListener('click', function() {
+            var cmd = this.getAttribute('data-cmd');
+            var demoCommands = {
+              'toc': 'toc README.md',
+              'qr': 'qr "https://hillcountryventures.co"',
+              'cheat': 'cheat git',
+              'size': 'size .',
+              'envlock': 'envlock --check',
+              'hash': 'hash --algo sha256 file.txt',
+              'todo': 'todo --list',
+              'json': 'json --pretty',
+              'port': 'port --list',
+              'cert': 'cert example.com',
+              'dup': 'dup .',
+              'rename': 'rename --dry-run --pattern " " --replace "-" *.txt',
+              'backup': 'backup --list',
+              'env': 'env --list',
+              'url': 'url https://api.example.com/v2/users?limit=10'
+            };
+            var text = demoCommands[cmd] || cmd + ' --help';
+            // Clear current input
+            while (cursorPos > 0) {
+              term.write('\b \b');
+              cursorPos--;
+            }
+            inputBuffer = text;
+            cursorPos = text.length;
+            term.write(text);
+            term.focus();
+          });
+        });
+      });
+
+    })();
+  </script>
+</body>
+</html>

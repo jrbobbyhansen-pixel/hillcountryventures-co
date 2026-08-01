@@ -364,6 +364,7 @@
       <nav>
         <a href="index.html">Portfolio</a>
         <a href="manta.html" class="active">Manta</a>
+        <a href="manta-demo.html">Live Demo</a>
         <a href="index.html#about">About</a>
         <a href="index.html#contact">Contact</a>
       </nav>
@@ -463,9 +464,15 @@
       <h2>Published CLI Tools</h2>
       <p class="intro-text" style="margin-bottom: 1.5rem;">
         Every tool ships with --help, --version, tests, and a README. Zero external
-        dependencies. Install any of them with pip:
+        dependencies. Install individually or grab them all:
       </p>
+      <pre style="background: var(--wash); padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.8rem; margin-bottom: 1.5rem; overflow-x: auto;"><code>pip install git+https://github.com/jrbobbyhansen-pixel/manta-meta.git
+# Then: manta list, manta toc README.md, manta pipe hash envlock -- file.txt</code></pre>
       <div class="tool-grid">
+        <a href="https://github.com/jrbobbyhansen-pixel/manta-meta" class="tool-card" target="_blank" style="border-color: var(--accent);">
+          <strong>manta</strong>
+          <span>Meta-package: all 15 tools + pipe chains</span>
+        </a>
         <a href="https://github.com/jrbobbyhansen-pixel/toc" class="tool-card" target="_blank">
           <strong>toc</strong>
           <span>Markdown TOC generator</span>
@@ -527,6 +534,9 @@
           <span>URL validator and parser</span>
         </a>
       </div>
+      <p style="margin-top: 1.2rem;">
+        <a href="manta-demo.html" style="display: inline-block; background: var(--brand); color: #fff; padding: 0.5rem 1.2rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;">Try them live in browser</a>
+      </p>
     </div>
   </section>
 
