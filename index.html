@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hill Country Ventures — Bobby Hansen Jr.</title>
+  <meta name="description" content="Portfolio of ventures by Bobby Hansen Jr. — building businesses that run without him.">
+  <style>
+    /* ============================================================
+       HILL COUNTRY VENTURES · Portfolio Web
+       Design system: Hansen Capital Group PDF identity
+       Navy #1d3a5f · Gold #b0872f · Georgia serif · Avenir body
+       ============================================================ */
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --brand: #1d3a5f;
+      --accent: #b0872f;
+      --ink: #3a3f47;
+      --ink-strong: #23272e;
+      --muted: #7b828d;
+      --line: #e7eaee;
+      --line-soft: #eef1f4;
+      --wash: #f7f9fb;
+      --paper: #ffffff;
+      --font-display: Georgia, "Bitstream Charter", Charter, "Liberation Serif", "Times New Roman", serif;
+      --font-body: "Avenir Next", "Helvetica Neue", "Segoe UI", "Liberation Sans", "DejaVu Sans", Arial, sans-serif;
+      --max-width: 1100px;
+      --radius: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.62;
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- Typography --------------------------------------------------- */
+    h1, h2, h3, h4, .serif { font-family: var(--font-display); }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: var(--brand);
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      font-weight: 700;
+      color: var(--brand);
+      margin: 0 0 1rem;
+      padding-bottom: 0.6rem;
+      position: relative;
+    }
+
+    h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 2.4rem;
+      height: 2.5px;
+      background: var(--accent);
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink-strong);
+      margin: 0 0 0.35rem;
+    }
+
+    p  { margin: 0 0 0.75rem; }
+    a  { color: var(--brand); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--accent); }
+    .small { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+    /* ---- Layout ------------------------------------------------------- */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ---- Masthead ----------------------------------------------------- */
+    .masthead {
+      background: var(--brand);
+      color: #ffffff;
+      padding: 1.5rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .masthead .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wordmark {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+    }
+
+    .wordmark span { color: var(--accent); }
+
+    .masthead nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .masthead nav a {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .masthead nav a:hover { color: #ffffff; }
+
+    /* ---- Hero ---------------------------------------------------------- */
+    .hero {
+      padding: 5rem 0 3.5rem;
+      background: var(--wash);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero .container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.2rem;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--ink);
+      max-width: 36rem;
+      line-height: 1.55;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .hero-meta .lbl {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 0.15rem;
+      font-weight: 700;
+    }
+
+    .hero-meta .val {
+      font-size: 0.9rem;
+      color: var(--ink-strong);
+    }
+
+    /* ---- Section ------------------------------------------------------- */
+    section { padding: 3.5rem 0; }
+
+    section h2 { margin-bottom: 1.8rem; }
+
+    /* ---- Venture Grid -------------------------------------------------- */
+    .venture-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .venture-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.4rem;
+      background: var(--paper);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .venture-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .venture-card .tagline {
+      font-size: 0.7rem;
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 0.4rem;
+    }
+
+    .venture-card h3 {
+      color: var(--brand);
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .venture-card p {
+      font-size: 0.9rem;
+      color: var(--ink);
+      flex: 1;
+      margin-bottom: 0.8rem;
+    }
+
+    .venture-card .status {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      margin-bottom: 0.6rem;
+      align-self: flex-start;
+    }
+
+    .status-operating { background: #e6f4ea; color: #1e7e34; }
+    .status-building { background: #e8f0fe; color: #1967d2; }
+    .status-design { background: #fef7e0; color: #b06000; }
+    .status-passion { background: #f3e8fd; color: #7c3aed; }
+    .status-partner { background: #fce8e6; color: #c5221f; }
+
+    .venture-card .links {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .venture-card .links a {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* ---- About / Philosophy -------------------------------------------- */
+    .philosophy {
+      background: var(--wash);
+      border-top: 1px solid var(--line);
+    }
+
+    .philosophy blockquote {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--brand);
+      line-height: 1.5;
+      max-width: 36rem;
+      margin: 0.5rem 0 1.5rem;
+      padding-left: 1.5rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    /* ---- Footer -------------------------------------------------------- */
+    footer {
+      background: var(--brand);
+      color: rgba(255,255,255,0.7);
+      padding: 2.5rem 0;
+      font-size: 0.85rem;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer .wordmark { font-size: 1rem; }
+
+    footer a { color: rgba(255,255,255,0.8); }
+    footer a:hover { color: #ffffff; }
+
+    /* ---- Responsive ---------------------------------------------------- */
+    @media (max-width: 640px) {
+      .masthead .container { flex-direction: column; gap: 0.6rem; }
+      .masthead nav { gap: 1rem; }
+      .hero { padding: 3rem 0 2rem; }
+      .venture-grid { grid-template-columns: 1fr; }
+      footer .container { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== MASTHEAD ====== -->
+  <header class="masthead">
+    <div class="container">
+      <div class="wordmark">Hill Country <span>Ventures</span></div>
+      <nav>
+        <a href="#ventures">Ventures</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ====== HERO ====== -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-kicker">Portfolio</div>
+      <h1>Building businesses<br>that run without me.</h1>
+      <p class="hero-sub">
+        A collection of ventures by Bobby Hansen Jr. — from live apps and
+        operating companies to designs waiting for build. Each one built to
+        serve, scale, and eventually run on its own.
+      </p>
+      <div class="hero-meta">
+        <div>
+          <div class="lbl">Location</div>
+          <div class="val">San Antonio, TX</div>
+        </div>
+        <div>
+          <div class="lbl">Operating</div>
+          <div class="val">3 ventures live</div>
+        </div>
+        <div>
+          <div class="lbl">Philosophy</div>
+          <div class="val">Faith · Family · Outdoors</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== VENTURES ====== -->
+  <section id="ventures">
+    <div class="container">
+      <h2>Ventures</h2>
+      <div class="venture-grid">
+
+        <!-- Hill Country Clean -->
+        <div class="venture-card">
+          <span class="status status-operating">Operating</span>
+          <h3>Hill Country Clean</h3>
+          <p>Power washing and exterior cleaning for the Texas Hill Country. Driveways, walkways, patios, and home exteriors. Partnering with realtors for listing prep.</p>
+          <div class="links">
+            <a href="https://hillcountryclean.com" target="_blank">Website →</a>
+          </div>
+        </div>
+
+        <!-- choosegod -->
+        <div class="venture-card">
+          <span class="status status-operating">Operating</span>
+          <h3>choosegod</h3>
+          <p>AI-powered Bible study app. Ask questions, get answers rooted in Scripture. Live on the App Store with RevenueCat subscriptions.</p>
+          <div class="links">
+            <a href="https://choosegod.app" target="_blank">Website →</a>
+          </div>
+        </div>
+
+        <!-- BlindBuddy -->
+        <div class="venture-card">
+          <span class="status status-building">Building</span>
+          <h3>BlindBuddy</h3>
+          <p>The social network for duck hunters. Find hunting partners, share blinds, track seasons. Redesign launching soon. First annual event: The Dust Off dove hunt.</p>
+          <div class="links">
+            <a href="https://blindbuddy.app" target="_blank">Website →</a>
+          </div>
+        </div>
+
+        <!-- Chain -->
+        <div class="venture-card">
+          <span class="status status-design">Designed</span>
+          <h3>Chain</h3>
+          <p>AI-powered construction surveyor. Field workers describe what they see — Chain spots problems, suggests fixes, and keeps the build moving. Partnership with Joey Palomo.</p>
+          <div class="links">
+            <a href="https://chainsurveyor.ai" target="_blank">chainsurveyor.ai →</a>
+          </div>
+        </div>
+
+        <!-- Enagic -->
+        <div class="venture-card">
+          <span class="status status-partner">Family</span>
+          <h3>Enagic · Alkaline Water</h3>
+          <p>Electrolyzed, ionized alkaline water systems for homes and businesses. B2B partnership program targeting plumbers, water treatment companies, and custom home builders.</p>
+        </div>
+
+        <!-- Lore -->
+        <div class="venture-card">
+          <span class="status status-passion">Passion</span>
+          <h3>Lore</h3>
+          <p>AI Chief of Staff app. A persistent, context-aware assistant that knows your world — your people, your ventures, your decisions. The long-term vision for how humans work with AI.</p>
+        </div>
+
+        <!-- Manta -->
+        <div class="venture-card">
+          <span class="status status-building">Building</span>
+          <h3>Manta</h3>
+          <p>Autonomous micro-SaaS portfolio. One paid + one free tool per build cycle, built in public on X. Small, useful, zero-dependency tools for small business owners.</p>
+          <div class="links">
+            <a href="https://x.com/MantaBuildsAI" target="_blank">Build in public →</a>
+          </div>
+        </div>
+
+        <!-- Hansen Capital Group -->
+        <div class="venture-card">
+          <span class="status status-operating">Operating</span>
+          <h3>Hansen Capital Group</h3>
+          <p>Consulting and advisory. Strategic planning, proposal development, and operational design for businesses and organizations. The engine behind the ventures.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== ABOUT / PHILOSOPHY ====== -->
+  <section id="about" class="philosophy">
+    <div class="container">
+      <h2>How I Build</h2>
+      <blockquote>
+        "Build businesses that run without me so I can spend time on faith, family, and the outdoors."
+      </blockquote>
+      <p>
+        Every venture here is built to a single standard: does it reduce or remove
+        a dependency on my time? If a tool, system, or partnership doesn't move
+        toward autonomy, it doesn't ship. I'd rather have one business that runs
+        itself than five that need me every day.
+      </p>
+      <p>
+        I work with partners who bring what I don't have — domain expertise,
+        sales teams, operational capacity. My role is product, systems, and
+        the connective tissue between ideas and execution.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====== CONTACT ====== -->
+  <section id="contact">
+    <div class="container">
+      <h2>Contact</h2>
+      <p>
+        Reach me at <strong>bobby@hillcountryventures.co</strong> or
+        <strong>210-287-7293</strong>.
+      </p>
+      <p class="small">
+        Hill Country Ventures LLC · San Antonio, Texas
+      </p>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <div class="container">
+      <div class="wordmark">Hill Country <span>Ventures</span></div>
+      <div>© 2026 Hill Country Ventures LLC</div>
+    </div>
+  </footer>
+
+</body>
+</html>
