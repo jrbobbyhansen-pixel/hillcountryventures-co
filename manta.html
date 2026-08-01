@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manta — Hill Country Ventures</title>
+  <meta name="description" content="Manta is an autonomous micro-SaaS portfolio. One paid plus one free tool per build cycle, built in public on X.">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --brand: #1d3a5f;
+      --brand-light: #2a4f7a;
+      --accent: #b0872f;
+      --accent-light: #d4a843;
+      --ink: #3a3f47;
+      --ink-strong: #1a1e24;
+      --muted: #7b828d;
+      --line: #e2e6ec;
+      --line-soft: #eef1f4;
+      --wash: #f6f8fa;
+      --paper: #ffffff;
+      --font-display: Georgia, "Bitstream Charter", Charter, "Liberation Serif", "Times New Roman", serif;
+      --font-body: "Avenir Next", "Helvetica Neue", "Segoe UI", "Liberation Sans", "DejaVu Sans", Arial, sans-serif;
+      --max-width: 900px;
+      --radius: 10px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.65;
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .serif { font-family: var(--font-display); }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--brand);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-weight: 700;
+      color: var(--brand);
+      margin: 0 0 1.2rem;
+      padding-bottom: 0.7rem;
+      position: relative;
+    }
+
+    h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 2.8rem;
+      height: 2.5px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink-strong);
+      margin: 0 0 0.3rem;
+    }
+
+    p  { margin: 0 0 0.75rem; }
+    a  { color: var(--brand); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--accent); }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .masthead {
+      background: var(--brand);
+      color: #ffffff;
+      padding: 1.2rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .masthead .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wordmark {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+    }
+
+    .wordmark span { color: var(--accent); }
+
+    .masthead nav {
+      display: flex;
+      gap: 1.8rem;
+      align-items: center;
+    }
+
+    .masthead nav a {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .masthead nav a:hover { color: #ffffff; }
+    .masthead nav a.active { color: #ffffff; }
+
+    .hero {
+      padding: 5rem 0 3rem;
+      background: linear-gradient(135deg, var(--wash) 0%, #eef2f7 100%);
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -30%;
+      right: -5%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(176,135,47,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-kicker {
+      font-size: 0.75rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .hero h1 { max-width: 36rem; }
+
+    .hero-sub {
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      color: var(--ink);
+      max-width: 32rem;
+      line-height: 1.6;
+      margin-top: 0.5rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .hero-meta .lbl {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+      font-weight: 700;
+    }
+
+    .hero-meta .val {
+      font-size: 0.9rem;
+      color: var(--ink-strong);
+      font-weight: 500;
+    }
+
+    section { padding: 3.5rem 0; }
+
+    .intro-text {
+      max-width: 36rem;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .build-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .build-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      background: var(--paper);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .build-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-md);
+    }
+
+    .build-card .tag {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.6rem;
+    }
+
+    .tag-paid { background: #fef7e0; color: #b06000; }
+    .tag-free { background: #e6f4ea; color: #1e7e34; }
+    .tag-idea { background: #e8f0fe; color: #1967d2; }
+
+    .build-card p {
+      font-size: 0.85rem;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    .build-card .links {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 0.6rem;
+    }
+
+    .build-card .links a {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .principle-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .principle-list li {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--line-soft);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .principle-list li:last-child { border-bottom: none; }
+
+    .principle-list li strong {
+      color: var(--brand);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    footer {
+      background: var(--brand);
+      color: rgba(255,255,255,0.65);
+      padding: 2.5rem 0;
+      font-size: 0.82rem;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer .wordmark { font-size: 1rem; }
+    footer a { color: rgba(255,255,255,0.75); }
+    footer a:hover { color: #ffffff; }
+
+    footer .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .masthead .container { flex-direction: column; gap: 0.5rem; }
+      .masthead nav { gap: 1.2rem; }
+      .hero { padding: 3rem 0 2rem; }
+      .build-grid { grid-template-columns: 1fr; }
+      footer .container { flex-direction: column; text-align: center; }
+      footer .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="container">
+      <a href="index.html" class="wordmark">Hill Country <span>Ventures</span></a>
+      <nav>
+        <a href="index.html">Portfolio</a>
+        <a href="manta.html" class="active">Manta</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-kicker">Autonomous Micro-SaaS Portfolio</div>
+      <h1>Manta</h1>
+      <p class="hero-sub">
+        An autonomous AI agent that builds, ships, and markets small software tools.
+        One paid product plus one free tool per build cycle, built in public on X.
+      </p>
+      <div class="hero-meta">
+        <div>
+          <div class="lbl">Status</div>
+          <div class="val">Building</div>
+        </div>
+        <div>
+          <div class="lbl">Cycle</div>
+          <div class="val">Cycle 1</div>
+        </div>
+        <div>
+          <div class="lbl">Build in Public</div>
+          <div class="val"><a href="https://x.com/MantaBuildsAI" target="_blank">@MantaBuildsAI</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label">What This Is</div>
+      <h2>Concept</h2>
+      <div class="intro-text">
+        <p>
+          Manta is an experiment in autonomous software development. A separate AI agent
+          running on its own schedule — conceiving ideas, writing code, shipping tools,
+          and promoting them — all in public view. Think of it as an aquarium where you
+          can watch an AI build businesses from scratch.
+        </p>
+        <p>
+          Each build cycle produces two things: a free tool that builds trust and audience,
+          and a paid product that generates revenue. The tools are small, useful, and
+          targeted at small business owners and non-technical people — not developers.
+        </p>
+        <p>
+          Manta operates under supervised autonomy. Every PR, post, and deploy is reviewed
+          before it ships. The quality standard is the same as any other venture: proper
+          CLI interfaces, error messages that tell you what to do, tests, and documentation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label">Current Build Cycle</div>
+      <h2>Cycle 1</h2>
+      <div class="build-grid">
+
+        <div class="build-card">
+          <span class="tag tag-idea">Idea</span>
+          <h3>Paid Product</h3>
+          <p>First paid micro-SaaS. Concept phase — identifying a problem worth solving for small business owners that can be built quickly and priced simply.</p>
+        </div>
+
+        <div class="build-card">
+          <span class="tag tag-idea">Idea</span>
+          <h3>Free Tool</h3>
+          <p>Companion free tool to build trust and drive awareness. Designed to be genuinely useful on its own, not a lead magnet with no substance.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label">Build Standards</div>
+      <h2>Quality Principles</h2>
+      <ul class="principle-list">
+        <li><strong>Proper CLI.</strong> Every tool ships with --help, consistent exit codes, and --version. No guesswork.</li>
+        <li><strong>Helpful errors.</strong> Error messages tell you what to do, not just what went wrong.</li>
+        <li><strong>Tests.</strong> Happy path and error path minimum. No untested code ships.</li>
+        <li><strong>Documentation.</strong> One paragraph, one example, one install command. That is the minimum.</li>
+        <li><strong>Zero bloat.</strong> Minimal external dependencies. Portable across macOS, Linux, and WSL.</li>
+        <li><strong>No scope creep.</strong> Small, focused, finished. One thing well.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label">Follow Along</div>
+      <h2>Watch the Build</h2>
+      <div class="intro-text">
+        <p>
+          Manta builds in public on X at <a href="https://x.com/MantaBuildsAI" target="_blank">@MantaBuildsAI</a>.
+          Every tool, every post, every decision — visible as it happens.
+        </p>
+        <p>
+          The source code for each tool is published on GitHub under the Manta organization.
+          Paid tools are distributed through standard channels; free tools are available
+          immediately to anyone.
+        </p>
+      </div>
+      <a href="index.html" class="back-link">Back to Portfolio</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <a href="index.html" class="wordmark">Hill Country <span>Ventures</span></a>
+      <div class="footer-links">
+        <a href="index.html">Portfolio</a>
+        <a href="manta.html">Manta</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div>2026 Hill Country Ventures LLC</div>
+    </div>
+  </footer>
+
+</body>
+</html>

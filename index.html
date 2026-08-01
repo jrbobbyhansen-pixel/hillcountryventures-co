@@ -6,12 +6,6 @@
   <title>Hill Country Ventures — Bobby Hansen Jr.</title>
   <meta name="description" content="Portfolio of ventures by Bobby Hansen Jr. — building businesses that run without him so he can spend time on faith, family, and the outdoors.">
   <style>
-    /* ============================================================
-       HILL COUNTRY VENTURES · Portfolio Web v2
-       Design system: Hansen Capital Group PDF identity
-       Navy #1d3a5f · Gold #b0872f · Georgia serif · Avenir body
-       ============================================================ */
-
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
@@ -46,7 +40,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ---- Typography --------------------------------------------------- */
     h1, h2, h3, h4, .serif { font-family: var(--font-display); }
 
     h1 {
@@ -89,19 +82,10 @@
     a:hover { color: var(--accent); }
     .small { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
 
-    /* ---- Utility ------------------------------------------------------ */
     .container {
       max-width: var(--max-width);
       margin: 0 auto;
       padding: 0 1.5rem;
-    }
-
-    .gold-line {
-      width: 3rem;
-      height: 2.5px;
-      background: var(--accent);
-      border-radius: 2px;
-      margin: 0.5rem 0 1.2rem;
     }
 
     .section-label {
@@ -113,7 +97,6 @@
       margin-bottom: 0.3rem;
     }
 
-    /* ---- Masthead ----------------------------------------------------- */
     .masthead {
       background: var(--brand);
       color: #ffffff;
@@ -157,7 +140,6 @@
 
     .masthead nav a:hover { color: #ffffff; }
 
-    /* ---- Hero ---------------------------------------------------------- */
     .hero {
       padding: 6rem 0 4rem;
       background: linear-gradient(135deg, var(--wash) 0%, #eef2f7 100%);
@@ -194,9 +176,7 @@
       font-weight: 700;
     }
 
-    .hero h1 {
-      max-width: 44rem;
-    }
+    .hero h1 { max-width: 44rem; }
 
     .hero-sub {
       font-size: clamp(1rem, 2vw, 1.2rem);
@@ -230,12 +210,9 @@
       font-weight: 500;
     }
 
-    /* ---- Section ------------------------------------------------------- */
     section { padding: 4.5rem 0; }
-
     section h2 { margin-bottom: 2rem; }
 
-    /* ---- Stats Bar ---------------------------------------------------- */
     .stats-bar {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -270,7 +247,6 @@
       margin-top: 0.2rem;
     }
 
-    /* ---- Venture Grid -------------------------------------------------- */
     .venture-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -299,12 +275,6 @@
       justify-content: space-between;
       align-items: flex-start;
       margin-bottom: 0.6rem;
-    }
-
-    .venture-card .card-icon {
-      font-size: 1.6rem;
-      line-height: 1;
-      opacity: 0.7;
     }
 
     .venture-card h3 {
@@ -349,16 +319,13 @@
       font-weight: 600;
     }
 
-    /* ---- Philosophy ---------------------------------------------------- */
     .philosophy {
       background: var(--wash);
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
     }
 
-    .philosophy .content {
-      max-width: 40rem;
-    }
+    .philosophy .content { max-width: 40rem; }
 
     .philosophy blockquote {
       font-family: var(--font-display);
@@ -376,10 +343,7 @@
       line-height: 1.65;
     }
 
-    /* ---- Contact ------------------------------------------------------- */
-    #contact {
-      background: var(--paper);
-    }
+    #contact { background: var(--paper); }
 
     .contact-grid {
       display: grid;
@@ -403,7 +367,6 @@
       font-weight: 500;
     }
 
-    /* ---- Footer -------------------------------------------------------- */
     footer {
       background: var(--brand);
       color: rgba(255,255,255,0.65);
@@ -420,7 +383,6 @@
     }
 
     footer .wordmark { font-size: 1rem; }
-
     footer a { color: rgba(255,255,255,0.75); }
     footer a:hover { color: #ffffff; }
 
@@ -429,7 +391,6 @@
       gap: 1.5rem;
     }
 
-    /* ---- Animations ---------------------------------------------------- */
     .fade-in {
       opacity: 0;
       transform: translateY(12px);
@@ -441,7 +402,6 @@
       transform: translateY(0);
     }
 
-    /* ---- Responsive ---------------------------------------------------- */
     @media (max-width: 768px) {
       .masthead .container { flex-direction: column; gap: 0.5rem; }
       .masthead nav { gap: 1.2rem; }
@@ -461,19 +421,18 @@
 </head>
 <body>
 
-  <!-- ====== MASTHEAD ====== -->
   <header class="masthead">
     <div class="container">
       <div class="wordmark">Hill Country <span>Ventures</span></div>
       <nav>
         <a href="#ventures">Ventures</a>
+        <a href="manta.html">Manta</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
   </header>
 
-  <!-- ====== HERO ====== -->
   <section class="hero">
     <div class="container">
       <div class="hero-kicker">Portfolio</div>
@@ -494,19 +453,17 @@
         </div>
         <div>
           <div class="lbl">Philosophy</div>
-          <div class="val">Faith · Family · Outdoors</div>
+          <div class="val">Faith - Family - Outdoors</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ====== VENTURES ====== -->
   <section id="ventures">
     <div class="container">
       <div class="section-label">Active Portfolio</div>
       <h2>Ventures</h2>
 
-      <!-- Stats -->
       <div class="stats-bar">
         <div class="stat-item">
           <div class="stat-number">4</div>
@@ -528,96 +485,81 @@
 
       <div class="venture-grid">
 
-        <!-- Hill Country Clean -->
         <div class="venture-card fade-in">
           <div class="card-top">
             <span class="status status-operating">Operating</span>
-            <span class="card-icon">🏠</span>
           </div>
           <h3>Hill Country Clean</h3>
           <p>Power washing and exterior cleaning for the Texas Hill Country. Driveways, walkways, patios, and home exteriors. Partnering with realtors for listing prep.</p>
           <div class="links">
-            <a href="https://hillcountryclean.com" target="_blank">Website →</a>
+            <a href="https://hillcountryclean.com" target="_blank">Visit site</a>
           </div>
         </div>
 
-        <!-- choosegod -->
         <div class="venture-card fade-in">
           <div class="card-top">
             <span class="status status-operating">Operating</span>
-            <span class="card-icon">✝️</span>
           </div>
           <h3>choosegod</h3>
           <p>AI-powered Bible study app. Ask questions, get answers rooted in Scripture. Live on the App Store with RevenueCat subscriptions.</p>
           <div class="links">
-            <a href="https://choosegod.app" target="_blank">Website →</a>
+            <a href="https://choosegod.app" target="_blank">Visit site</a>
           </div>
         </div>
 
-        <!-- BlindBuddy -->
         <div class="venture-card fade-in">
           <div class="card-top">
             <span class="status status-operating">Operating</span>
-            <span class="card-icon">🦆</span>
           </div>
           <h3>BlindBuddy</h3>
-          <p>The social network for duck hunters. Find hunting partners, share blinds, track seasons. Live with ~300 users. First annual event: The Dust Off dove hunt.</p>
+          <p>The social network for duck hunters. Find hunting partners, share blinds, track seasons. Live with roughly 300 users. First annual event: The Dust Off dove hunt.</p>
           <div class="links">
-            <a href="https://blindbuddy.app" target="_blank">Website →</a>
+            <a href="https://blindbuddy.app" target="_blank">Visit site</a>
           </div>
         </div>
 
-        <!-- Chain -->
         <div class="venture-card fade-in">
           <div class="card-top">
             <span class="status status-design">Designed</span>
-            <span class="card-icon">🏗️</span>
           </div>
           <h3>Chain</h3>
           <p>AI-powered construction surveyor. Field workers describe what they see — Chain spots problems, suggests fixes, and keeps the build moving. Partnership with Joey Palomo.</p>
           <div class="links">
-            <a href="https://chainsurveyor.ai" target="_blank">chainsurveyor.ai →</a>
+            <a href="https://chainsurveyor.ai" target="_blank">chainsurveyor.ai</a>
           </div>
         </div>
 
-        <!-- Enagic -->
         <div class="venture-card fade-in">
           <div class="card-top">
             <span class="status status-partner">Family</span>
-            <span class="card-icon">💧</span>
           </div>
-          <h3>Enagic · Alkaline Water</h3>
+          <h3>Enagic - Alkaline Water</h3>
           <p>Electrolyzed, ionized alkaline water systems for homes and businesses. B2B partnership program targeting plumbers, water treatment companies, and custom home builders.</p>
         </div>
 
-        <!-- Lore -->
         <div class="venture-card fade-in">
           <div class="card-top">
             <span class="status status-passion">Passion</span>
-            <span class="card-icon">🧠</span>
           </div>
           <h3>Lore</h3>
           <p>AI Chief of Staff app. A persistent, context-aware assistant that knows your world — your people, your ventures, your decisions. The long-term vision for how humans work with AI.</p>
         </div>
 
-        <!-- Manta -->
         <div class="venture-card fade-in">
           <div class="card-top">
             <span class="status status-building">Building</span>
-            <span class="card-icon">🐟</span>
           </div>
           <h3>Manta</h3>
-          <p>Autonomous micro-SaaS portfolio. One paid + one free tool per build cycle, built in public on X. Small, useful, zero-dependency tools for small business owners.</p>
+          <p>Autonomous micro-SaaS portfolio. One paid plus one free tool per build cycle, built in public on X. Small, useful, zero-dependency tools for small business owners.</p>
           <div class="links">
-            <a href="https://x.com/MantaBuildsAI" target="_blank">Build in public →</a>
+            <a href="manta.html">Project page</a>
+            <a href="https://x.com/MantaBuildsAI" target="_blank">Build in public</a>
           </div>
         </div>
 
-        <!-- Hansen Capital Group -->
         <div class="venture-card fade-in">
           <div class="card-top">
             <span class="status status-operating">Operating</span>
-            <span class="card-icon">🏢</span>
           </div>
           <h3>Hansen Capital Group</h3>
           <p>Consulting and advisory. Strategic planning, proposal development, and operational design for businesses and organizations. The engine behind the ventures.</p>
@@ -627,7 +569,6 @@
     </div>
   </section>
 
-  <!-- ====== ABOUT / PHILOSOPHY ====== -->
   <section id="about" class="philosophy">
     <div class="container">
       <div class="section-label">How I Build</div>
@@ -638,12 +579,12 @@
         </blockquote>
         <p>
           Every venture here is built to a single standard: does it reduce or remove
-          a dependency on my time? If a tool, system, or partnership doesn't move
-          toward autonomy, it doesn't ship. I'd rather have one business that runs
+          a dependency on my time? If a tool, system, or partnership does not move
+          toward autonomy, it does not ship. I would rather have one business that runs
           itself than five that need me every day.
         </p>
         <p>
-          I work with partners who bring what I don't have — domain expertise,
+          I work with partners who bring what I do not have — domain expertise,
           sales teams, operational capacity. My role is product, systems, and
           the connective tissue between ideas and execution.
         </p>
@@ -651,7 +592,6 @@
     </div>
   </section>
 
-  <!-- ====== CONTACT ====== -->
   <section id="contact">
     <div class="container">
       <div class="section-label">Get in Touch</div>
@@ -677,20 +617,19 @@
     </div>
   </section>
 
-  <!-- ====== FOOTER ====== -->
   <footer>
     <div class="container">
       <div class="wordmark">Hill Country <span>Ventures</span></div>
       <div class="footer-links">
         <a href="#ventures">Ventures</a>
+        <a href="manta.html">Manta</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
       </div>
-      <div>© 2026 Hill Country Ventures LLC</div>
+      <div>2026 Hill Country Ventures LLC</div>
     </div>
   </footer>
 
-  <!-- ====== SCROLL ANIMATIONS ====== -->
   <script>
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
